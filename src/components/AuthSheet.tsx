@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
 interface AuthSheetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -12,6 +13,7 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -25,7 +27,10 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              display_name: displayName || email.split('@')[0]
+            }
           }
         });
         
@@ -88,11 +93,27 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
           </h2>
           <p className="text-gray-400 text-sm mb-8">
             {isSignUp 
-              ? 'Join us to create and manage your events' 
+              ? 'Join the community to share and access study materials' 
               : 'Welcome back! Please sign in to continue'}
           </p>
 
           <form onSubmit={handleAuth} className="flex flex-col gap-6">
+            {isSignUp && (
+              <div>
+                <label htmlFor="displayName" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
+                  Display Name
+                </label>
+                <input
+                  id="displayName"
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:outline-none focus:border-[#FA76FF] transition-colors"
+                  placeholder="Your name"
+                />
+              </div>
+            )}
+
             <div>
               <label htmlFor="email" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
                 Email
