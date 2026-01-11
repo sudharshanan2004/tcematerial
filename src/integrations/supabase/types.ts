@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           event_id: string
@@ -82,6 +109,77 @@ export type Database = {
         }
         Relationships: []
       }
+      materials: {
+        Row: {
+          category_id: string | null
+          college: string | null
+          created_at: string
+          description: string | null
+          download_count: number
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          material_type: string
+          semester: number | null
+          subject: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          uploaded_by: string
+          view_count: number
+          year: number | null
+        }
+        Insert: {
+          category_id?: string | null
+          college?: string | null
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          material_type: string
+          semester?: number | null
+          subject?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          uploaded_by: string
+          view_count?: number
+          year?: number | null
+        }
+        Update: {
+          category_id?: string | null
+          college?: string | null
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          material_type?: string
+          semester?: number | null
+          subject?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          uploaded_by?: string
+          view_count?: number
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -105,6 +203,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      saved_materials: {
+        Row: {
+          id: string
+          material_id: string
+          saved_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          material_id: string
+          saved_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          material_id?: string
+          saved_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_materials_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
